@@ -20,6 +20,23 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## How was the frontend generated?
+
+Susan had given this prompt to v1.dev:
+
+```
+Develop a beautiful and compelling single page react app for generating jokes from a user input form. 
+
+Add a form with free form text and hard-coded drop down options for users to customize the Joke Parameters
+
+Choose which parameters you'd like to offer your users
+For example, allow users to select:
+A topic from a list of options (work, people, animals, food, television, etc.)
+A tone for the joke (witty, sarcastic, silly, dark, goofy, etc.)
+The type of joke (pun, knock-knock, story, etc.)
+The "temperature" (how much randomness/creativity to add to the joke)
+```
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
