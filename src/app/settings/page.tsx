@@ -11,20 +11,6 @@ import type { JokeSettings } from "@/types/settings"
 import { defaultSettings, jokeTopics, jokeTones, jokeTypes } from "@/types/settings"
 import { SettingsCard } from "@/components/settings-card"
 
-// Type guard for settings validation
-const isValidSettings = (data: unknown): data is JokeSettings => {
-  if (!data || typeof data !== 'object') return false
-  
-  const settings = data as Partial<JokeSettings>
-  return (
-    typeof settings.topic === 'string' &&
-    typeof settings.tone === 'string' &&
-    typeof settings.jokeType === 'string' &&
-    typeof settings.temperature === 'number' &&
-    settings.temperature >= 0.1 &&
-    settings.temperature <= 1.0
-  )
-}
 
 export default function Settings() {
   const [settings, setSettings] = useState<JokeSettings>(defaultSettings)
@@ -46,10 +32,6 @@ export default function Settings() {
         }
         
         const parsed = JSON.parse(savedSettings)
-        
-        if (!isValidSettings(parsed)) {
-          throw new Error('Invalid settings format')
-        }
         
         // Merge with defaults to ensure all fields exist
         const mergedSettings = {
@@ -74,15 +56,10 @@ export default function Settings() {
 
   const saveSettings = () => {
     setError(null)
-    try {
-      localStorage.setItem('jokeSettings', JSON.stringify(settings))
-      console.log('Saved settings:', settings)
-      setSaved(true)
-      setTimeout(() => setSaved(false), 2000)
-    } catch (error) {
-      console.error('Error saving settings:', error)
-      setError('Failed to save settings. Please try again.')
-    }
+    localStorage.setItem('jokeSettings', JSON.stringify(settings))
+    console.log('Saved settings:', settings)
+    setSaved(true)
+    setTimeout(() => setSaved(false), 2000)
   }
 
   return (

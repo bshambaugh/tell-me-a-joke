@@ -53,16 +53,11 @@ export default function SimpleJokeDisplay({ settings = defaultSettings }: Simple
           if (line.startsWith('data: ')) {
             const data = line.slice(6);
             if (data === '[DONE]') continue;
-
-            try {
-              const json = JSON.parse(data);
-              const content = json.choices[0]?.delta?.content;
-              if (content) {
-                jokeText += content;
-                setJoke(jokeText);
-              }
-            } catch (e) {
-              console.error('Error parsing JSON:', e);
+            const json = JSON.parse(data);
+            const content = json.choices[0]?.delta?.content;
+            if (content) {
+              jokeText += content;
+              setJoke(jokeText);
             }
           }
         }
