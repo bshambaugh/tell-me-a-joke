@@ -1,22 +1,36 @@
-import JokeGenerator from "@/components/joke-generator"
+"use client"
+
+import Link from "next/link"
+import { Settings } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import SimpleJokeDisplay from "@/components/simple-joke-display"
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 py-12 px-4 sm:px-6">
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-5xl md:text-6xl">
-            <span className="block">Joke Generator</span>
-            <span className="block text-purple-600 dark:text-purple-400">Laugh on Demand</span>
-          </h1>
-          <p className="mt-3 max-w-md mx-auto text-base text-gray-500 dark:text-gray-400 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-            Customize your joke parameters and get instant humor tailored just for you!
-          </p>
-        </div>
+    <div className="flex flex-col min-h-screen bg-gradient-to-b from-black to-amber-900/40">
+      {/* Header */}
+      <header className="p-4 flex justify-between items-center">
+        <h1 className="text-xl font-bold">
+          Tell Me A<span className="text-orange-500"> Joke</span>
+        </h1>
+        <Link href="/settings">
+          <Button variant="ghost" size="icon" className="text-gray-400 hover:text-white">
+            <Settings className="h-5 w-5" />
+            <span className="sr-only">Settings</span>
+          </Button>
+        </Link>
+      </header>
 
-        <JokeGenerator />
-      </div>
-    </main>
+      {/* Main content */}
+      <main className="flex-1 flex flex-col items-center justify-center p-6">
+        <SimpleJokeDisplay />
+      </main>
+
+      {/* Footer */}
+      <footer className="p-4 text-center text-sm text-gray-400">
+        <p>Powered by AI • Made with ❤️</p>
+      </footer>
+    </div>
   )
 }
 
