@@ -19,26 +19,27 @@ export default function Home() {
       setIsLoading(true)
       setError(null)
       
-
-        const savedSettings = localStorage.getItem('jokeSettings')
-        if (!savedSettings) {
-          console.log('No saved settings found, using defaults')
-          return
-        }
-        
-        const parsed = JSON.parse(savedSettings) 
-        
-        // Merge with defaults to ensure all fields exist
-        const mergedSettings = {
-          topic: parsed.topic || defaultSettings.topic,
-          tone: parsed.tone || defaultSettings.tone,
-          jokeType: parsed.jokeType || defaultSettings.jokeType,
-          temperature: parsed.temperature ?? defaultSettings.temperature
-        }
-        
-        console.log('Loaded settings:', mergedSettings)
-        setSettings(mergedSettings)
+      const savedSettings = localStorage.getItem('jokeSettings')
+      if (!savedSettings) {
+        console.log('No saved settings found, using defaults')
+        setSettings(defaultSettings)
         setIsLoading(false)
+        return
+      }
+      
+      const parsed = JSON.parse(savedSettings) 
+      
+      // Merge with defaults to ensure all fields exist
+      const mergedSettings = {
+        topic: parsed.topic || defaultSettings.topic,
+        tone: parsed.tone || defaultSettings.tone,
+        jokeType: parsed.jokeType || defaultSettings.jokeType,
+        temperature: parsed.temperature ?? defaultSettings.temperature
+      }
+      
+      console.log('Loaded settings:', mergedSettings)
+      setSettings(mergedSettings)
+      setIsLoading(false)
     }
 
     loadSettings()
