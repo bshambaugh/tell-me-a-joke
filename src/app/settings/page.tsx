@@ -24,7 +24,7 @@ export default function Settings() {
       setIsLoading(true)
       setError(null)
       
-      try {
+  
         const savedSettings = localStorage.getItem('jokeSettings')
         if (!savedSettings) {
           console.log('No saved settings found, using defaults')
@@ -43,12 +43,7 @@ export default function Settings() {
         
         console.log('Loaded settings:', mergedSettings)
         setSettings(mergedSettings)
-      } catch (error) {
-        console.error('Error loading settings:', error)
-        setError('Failed to load settings. Using defaults.')
-      } finally {
         setIsLoading(false)
-      }
     }
 
     loadSettings()
@@ -59,7 +54,6 @@ export default function Settings() {
     localStorage.setItem('jokeSettings', JSON.stringify(settings))
     console.log('Saved settings:', settings)
     setSaved(true)
-    setTimeout(() => setSaved(false), 2000)
   }
 
   return (

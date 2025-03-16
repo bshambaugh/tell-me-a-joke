@@ -1,40 +1,15 @@
 import { Card } from '@/components/ui/card';
 import type { JokeSettings } from '@/types/settings';
-import Link from 'next/link';
-import { Button } from './ui/button';
 import { Settings as SettingsIcon } from 'lucide-react';
 
 interface SettingsCardProps {
   settings: JokeSettings;
-  isCompact?: boolean;
 }
 
-export function SettingsCard({ settings, isCompact = false }: SettingsCardProps) {
+export function SettingsCard({ settings }: SettingsCardProps) {
   if (!settings) return null;
 
   const { topic, tone, jokeType, temperature } = settings;
-
-  if (isCompact) {
-    return (
-      <Card className="bg-black/40 border border-amber-800/30 backdrop-blur-sm">
-        <div className="flex items-center justify-between px-3 py-2">
-          <div className="flex items-center gap-2 text-sm text-gray-400">
-            <SettingsIcon className="h-3.5 w-3.5 text-orange-400" />
-            <span>
-              {topic !== 'anything' && <span>{topic}, </span>}
-              {tone} {jokeType !== 'any' && <span>{jokeType} </span>}
-              jokes at {Math.round(temperature * 100)}% creativity
-            </span>
-          </div>
-          <Link href="/settings">
-            <Button variant="ghost" size="sm" className="h-7 px-2 -mr-2 text-orange-400 hover:text-orange-300 hover:bg-orange-400/10">
-              Edit
-            </Button>
-          </Link>
-        </div>
-      </Card>
-    );
-  }
 
   return (
     <Card className="p-6 bg-black/40 border border-amber-800/30 backdrop-blur-sm">

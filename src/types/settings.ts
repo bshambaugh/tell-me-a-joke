@@ -23,7 +23,7 @@ export const jokeTopics = [
   'music',
   'science',
   'history',
-] as const;
+];
 
 export const jokeTones = [
   'funny',
@@ -33,7 +33,7 @@ export const jokeTones = [
   'clever',
   'goofy',
   'punny',
-] as const;
+];
 
 export const jokeTypes = [
   'any',
@@ -43,4 +43,4 @@ export const jokeTypes = [
   'story',
   'pun',
   'riddle',
-] as const; 
+]; 

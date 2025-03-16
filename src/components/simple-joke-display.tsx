@@ -15,10 +15,11 @@ export default function SimpleJokeDisplay({ settings = defaultSettings }: Simple
   const [joke, setJoke] = useState('');
 
   const generateJoke = async () => {
-    try {
+
       setIsLoading(true);
       setJoke('');
 
+    try {
       const response = await fetch('/api/joke', {
         method: 'POST',
         headers: {
@@ -55,10 +56,8 @@ export default function SimpleJokeDisplay({ settings = defaultSettings }: Simple
             if (data === '[DONE]') continue;
             const json = JSON.parse(data);
             const content = json.choices[0]?.delta?.content;
-            if (content) {
-              jokeText += content;
-              setJoke(jokeText);
-            }
+            jokeText += content;
+            setJoke(jokeText);
           }
         }
       }
