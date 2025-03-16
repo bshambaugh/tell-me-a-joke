@@ -56,8 +56,10 @@ export default function SimpleJokeDisplay({ settings = defaultSettings }: Simple
             if (data === '[DONE]') continue;
             const json = JSON.parse(data);
             const content = json.choices[0]?.delta?.content;
-            jokeText += content;
-            setJoke(jokeText);
+            if (content) {
+              jokeText += content;
+              setJoke(jokeText);
+            }
           }
         }
       }
