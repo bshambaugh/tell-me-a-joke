@@ -1,26 +1,71 @@
 "use client"
 
 import Link from "next/link"
-import { Settings } from "lucide-react"
+import { Settings, Loader2, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import SimpleJokeDisplay from "@/components/simple-joke-display"
-import { useEffect, useState } from "react"
+import { useState, useEffect } from "react"
 import type { JokeSettings } from "@/types/settings"
 import { defaultSettings } from "@/types/settings"
 
+// Type guard for settings validation
+const isValidSettings = (data: unknown): data is JokeSettings => {
+  if (!data || typeof data !== 'object') return false
+  
+  const settings = data as Partial<JokeSettings>
+  return (
+    typeof settings.topic === 'string' &&
+    typeof settings.tone === 'string' &&
+    typeof settings.jokeType === 'string' &&
+    typeof settings.temperature === 'number' &&
+    settings.temperature >= 0.1 &&
+    settings.temperature <= 1.0
+  )
+}
+
 export default function Home() {
-  const [settings, setSettings] = useState<JokeSettings>(defaultSettings);
+  const [settings, setSettings] = useState<JokeSettings>(defaultSettings)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    const savedSettings = localStorage.getItem('jokeSettings');
-    if (savedSettings) {
+    const loadSettings = async () => {
+      setIsLoading(true)
+      setError(null)
+      
       try {
-        setSettings(JSON.parse(savedSettings));
+        const savedSettings = localStorage.getItem('jokeSettings')
+        if (!savedSettings) {
+          console.log('No saved settings found, using defaults')
+          return
+        }
+        
+        const parsed = JSON.parse(savedSettings)
+        
+        if (!isValidSettings(parsed)) {
+          throw new Error('Invalid settings format')
+        }
+        
+        // Merge with defaults to ensure all fields exist
+        const mergedSettings = {
+          topic: parsed.topic || defaultSettings.topic,
+          tone: parsed.tone || defaultSettings.tone,
+          jokeType: parsed.jokeType || defaultSettings.jokeType,
+          temperature: parsed.temperature ?? defaultSettings.temperature
+        }
+        
+        console.log('Loaded settings:', mergedSettings)
+        setSettings(mergedSettings)
       } catch (error) {
-        console.error('Error parsing settings:', error);
+        console.error('Error loading settings:', error)
+        setError('Failed to load settings. Using defaults.')
+      } finally {
+        setIsLoading(false)
       }
     }
-  }, []);
+
+    loadSettings()
+  }, [])
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-black to-amber-900/40">
@@ -40,7 +85,22 @@ export default function Home() {
       {/* Main content */}
       <main className="flex-1 flex flex-col items-center justify-center p-6">
         <div className="w-full max-w-xl mx-auto">
-          <SimpleJokeDisplay settings={settings} />
+          {isLoading ? (
+            <div className="flex items-center justify-center gap-2 text-gray-400">
+              <Loader2 className="h-5 w-5 animate-spin" />
+              <span>Loading settings...</span>
+            </div>
+          ) : (
+            <>
+              {error && (
+                <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 mb-4 flex items-center gap-2 text-red-400">
+                  <AlertCircle className="h-5 w-5 flex-shrink-0" />
+                  <p>{error}</p>
+                </div>
+              )}
+              <SimpleJokeDisplay settings={settings} />
+            </>
+          )}
         </div>
       </main>
 
