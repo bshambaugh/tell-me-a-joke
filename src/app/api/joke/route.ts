@@ -6,9 +6,6 @@ const config = new Configuration({
 });
 const openai = new OpenAIApi(config);
 
-// Set response time limit
-export const maxDuration = 30;
-
 // IMPORTANT: Set the runtime to edge for streaming responses
 export const runtime = 'edge';
 
