@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "FunnyReplies - AI Joke Generator",
+  title: "Tell Me A Joke - AI Joke Generator",
   description: "Generate hilarious jokes with AI",
 };
 

@@ -15,31 +15,45 @@ export default function Settings() {
   const [settings, setSettings] = useState<JokeSettings>(defaultSettings)
   const [saved, setSaved] = useState(false)
 
-  // Load settings from localStorage on mount
+  // Load settings on mount
   useEffect(() => {
-    try {
-      const savedSettings = localStorage.getItem("jokeSettings")
-      if (savedSettings) {
+    const savedSettings = localStorage.getItem('jokeSettings')
+    console.log('Loading settings:', savedSettings)
+    
+    if (savedSettings) {
+      try {
         const parsed = JSON.parse(savedSettings)
-        // Validate that all required fields exist
-        if (
-          parsed.topic &&
-          parsed.tone &&
-          parsed.jokeType &&
-          typeof parsed.temperature === 'number'
-        ) {
-          setSettings(parsed)
+        console.log('Parsed settings:', parsed)
+        
+        // Ensure all required fields exist
+        const mergedSettings = {
+          topic: parsed.topic || defaultSettings.topic,
+          tone: parsed.tone || defaultSettings.tone,
+          jokeType: parsed.jokeType || defaultSettings.jokeType,
+          temperature: parsed.temperature ?? defaultSettings.temperature
         }
+        
+        console.log('Using settings:', mergedSettings)
+        setSettings(mergedSettings)
+      } catch (error) {
+        console.error('Error loading settings:', error)
+        setSettings(defaultSettings)
       }
-    } catch (e) {
-      console.error("Error parsing saved settings:", e)
+    } else {
+      console.log('No saved settings found, using defaults')
     }
   }, [])
 
   const saveSettings = () => {
-    localStorage.setItem("jokeSettings", JSON.stringify(settings))
-    setSaved(true)
-    setTimeout(() => setSaved(false), 2000)
+    try {
+      localStorage.setItem('jokeSettings', JSON.stringify(settings))
+      console.log('Saved settings:', settings)
+      setSaved(true)
+      setTimeout(() => setSaved(false), 2000)
+    } catch (error) {
+      console.error('Error saving settings:', error)
+      alert('Failed to save settings. Please try again.')
+    }
   }
 
   return (
@@ -64,7 +78,7 @@ export default function Settings() {
 
           {/* Settings Form */}
           <div className="bg-black/20 border border-amber-800/30 rounded-3xl p-6 backdrop-blur-sm">
-            <form className="space-y-6">
+            <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); saveSettings(); }}>
               <div className="space-y-2">
                 <Label htmlFor="topic" className="text-gray-300 flex items-center gap-2">
                   Topic
@@ -151,8 +165,7 @@ export default function Settings() {
               </div>
 
               <Button
-                type="button"
-                onClick={saveSettings}
+                type="submit"
                 className={`w-full rounded-full p-6 text-xl font-bold transition-all transform hover:scale-105 ${
                   saved 
                     ? 'bg-green-500 hover:bg-green-600 text-white'

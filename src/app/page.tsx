@@ -4,8 +4,24 @@ import Link from "next/link"
 import { Settings } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import SimpleJokeDisplay from "@/components/simple-joke-display"
+import { useEffect, useState } from "react"
+import type { JokeSettings } from "@/types/settings"
+import { defaultSettings } from "@/types/settings"
 
 export default function Home() {
+  const [settings, setSettings] = useState<JokeSettings>(defaultSettings);
+
+  useEffect(() => {
+    const savedSettings = localStorage.getItem('jokeSettings');
+    if (savedSettings) {
+      try {
+        setSettings(JSON.parse(savedSettings));
+      } catch (error) {
+        console.error('Error parsing settings:', error);
+      }
+    }
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-black to-amber-900/40">
       {/* Header */}
@@ -23,7 +39,9 @@ export default function Home() {
 
       {/* Main content */}
       <main className="flex-1 flex flex-col items-center justify-center p-6">
-        <SimpleJokeDisplay />
+        <div className="w-full max-w-xl mx-auto">
+          <SimpleJokeDisplay settings={settings} />
+        </div>
       </main>
 
       {/* Footer */}
