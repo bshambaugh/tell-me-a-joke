@@ -17,7 +17,21 @@ export async function POST(req: Request) {
     const { messages, parameters } = await req.json();
     const { topic, tone, jokeType, temperature } = parameters;
 
-    const prompt = `Generate a ${tone} ${jokeType} joke about ${topic}. Make it funny and engaging.`;
+    // Enhanced system and user prompts for better joke generation
+    const systemPrompt = `You are a world-class stand-up comedian known for your perfect timing and clever humor. You excel at:
+                          - Crafting ${tone} jokes that land perfectly
+                          - Creating unexpected but delightful punchlines
+                          - Reading the room and keeping things appropriate
+                          - Making complex topics simple and funny
+                          - Using perfect setup-punchline timing
+
+                          Your jokes are always original, quotable, and leave people laughing.`;
+
+    const prompt = `Create a ${tone} joke that will genuinely make people laugh.${
+      topic !== 'anything' ? ` The topic is "${topic}" - use it in a clever, unexpected way.` : ' Choose a relatable topic.'
+    }${
+      jokeType !== 'any' ? ` Structure it as a ${jokeType} joke with perfect timing.` : ' Pick the most effective joke format.'
+    } Focus on the punchline and make it memorable.`;
 
     const response = await openai.createChatCompletion({
       model: 'gpt-4o',
@@ -25,7 +39,7 @@ export async function POST(req: Request) {
       messages: [
         {
           role: 'system',
-          content: 'You are a professional comedian specialized in generating funny and engaging jokes.'
+          content: systemPrompt
         },
         ...messages,
         {
