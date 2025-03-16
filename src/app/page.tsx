@@ -8,20 +8,6 @@ import { useState, useEffect } from "react"
 import type { JokeSettings } from "@/types/settings"
 import { defaultSettings } from "@/types/settings"
 
-// Type guard for settings validation
-const isValidSettings = (data: unknown): data is JokeSettings => {
-  if (!data || typeof data !== 'object') return false
-  
-  const settings = data as Partial<JokeSettings>
-  return (
-    typeof settings.topic === 'string' &&
-    typeof settings.tone === 'string' &&
-    typeof settings.jokeType === 'string' &&
-    typeof settings.temperature === 'number' &&
-    settings.temperature >= 0.1 &&
-    settings.temperature <= 1.0
-  )
-}
 
 export default function Home() {
   const [settings, setSettings] = useState<JokeSettings>(defaultSettings)
@@ -40,11 +26,7 @@ export default function Home() {
           return
         }
         
-        const parsed = JSON.parse(savedSettings)
-        
-        if (!isValidSettings(parsed)) {
-          throw new Error('Invalid settings format')
-        }
+        const parsed = JSON.parse(savedSettings) 
         
         // Merge with defaults to ensure all fields exist
         const mergedSettings = {
