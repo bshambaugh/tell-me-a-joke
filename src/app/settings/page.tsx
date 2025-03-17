@@ -10,6 +10,7 @@ import { ArrowLeft, Loader2, AlertCircle } from "lucide-react"
 import type { JokeSettings } from "@/types/settings"
 import { defaultSettings, jokeTopics, jokeTones, jokeTypes } from "@/types/settings"
 import { SettingsCard } from "@/components/settings-card"
+import { Input } from "@/components/ui/input"
 
 
 export default function Settings() {
@@ -94,6 +95,19 @@ export default function Settings() {
               {/* Settings Form */}
               <div className="bg-black/20 border border-amber-800/30 rounded-3xl p-6 backdrop-blur-sm">
                 <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); saveSettings(); }}>
+
+                <div className="space-y-2">
+                    <Label htmlFor="custom-prompt" className="text-gray-300 flex items-center gap-2">
+                      Custom Prompt
+                    </Label>
+                    <Input
+                      id="custom-prompt"
+                      placeholder="Add specific details for your joke..."
+                      value={settings.customPrompt}
+                      onValueChange={([value]) => setSettings(prev => ({ ...prev, customPrompt: value }))}
+                    />
+                  </div>
+
                   <div className="space-y-2">
                     <Label htmlFor="topic" className="text-gray-300 flex items-center gap-2">
                       Topic

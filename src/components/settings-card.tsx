@@ -9,7 +9,7 @@ interface SettingsCardProps {
 export function SettingsCard({ settings }: SettingsCardProps) {
   if (!settings) return null;
 
-  const { topic, tone, jokeType, temperature } = settings;
+  const { customPrompt, topic, tone, jokeType, temperature } = settings;
 
   return (
     <Card className="p-6 bg-black/40 border border-amber-800/30 backdrop-blur-sm">
@@ -19,6 +19,10 @@ export function SettingsCard({ settings }: SettingsCardProps) {
           Current Settings
         </h2>
         <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-1">
+            <div className="text-sm text-gray-400">Custom Prompt</div>
+            <div className="text-white font-medium capitalize">{customPrompt}</div>
+          </div>
           <div className="space-y-1">
             <div className="text-sm text-gray-400">Topic</div>
             <div className="text-white font-medium capitalize">{topic}</div>

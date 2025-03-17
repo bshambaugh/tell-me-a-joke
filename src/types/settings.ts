@@ -1,4 +1,5 @@
 export interface JokeSettings {
+  customPrompt : string;
   topic: string;
   tone: string;
   jokeType: string;
@@ -6,6 +7,7 @@ export interface JokeSettings {
 }
 
 export const defaultSettings: JokeSettings = {
+  customPrompt : '',
   topic: 'anything',
   tone: 'funny',
   jokeType: 'any',

@@ -31,6 +31,7 @@ export default function Home() {
       
       // Merge with defaults to ensure all fields exist
       const mergedSettings = {
+        customPrompt: parsed.customPrompt || defaultSettings.customPrompt,
         topic: parsed.topic || defaultSettings.topic,
         tone: parsed.tone || defaultSettings.tone,
         jokeType: parsed.jokeType || defaultSettings.jokeType,
