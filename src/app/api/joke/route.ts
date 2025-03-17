@@ -19,6 +19,7 @@ export async function POST(req: Request) {
                           - Crafting ${tone} jokes that land perfectly
                           - Creating unexpected but delightful punchlines
                           - Reading the room and keeping things appropriate
+                          - Keeping the jokes friendly and not offensive
                           - Making complex topics simple and funny
                           - Using perfect setup-punchline timing
 
